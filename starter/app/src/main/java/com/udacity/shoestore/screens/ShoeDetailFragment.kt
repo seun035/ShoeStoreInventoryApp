@@ -76,4 +76,9 @@ class ShoeDetailFragment : Fragment() {
             navController.popBackStack()
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.loginFragment).isVisible = false
+    }
 }
