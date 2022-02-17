@@ -33,9 +33,8 @@ class ShoeListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shoe_list, container, false)
-
+        binding.lifecycleOwner = this
         return binding.root
     }
 

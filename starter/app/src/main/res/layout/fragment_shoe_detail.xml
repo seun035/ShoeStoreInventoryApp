@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--I used Linear layout with vertical orientation because I felt it was perfect for the task -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="shoe"
+            type="com.udacity.shoestore.models.Shoe" />
+        <variable
+            name="viewmodel"
+            type="com.udacity.shoestore.viewmodels.ShoeViewModel" />
+    </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,6 +31,7 @@
                 style="@style/input_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@={shoe.name}"
                 android:ems="10"
                 android:hint="Shoe name"
                 android:inputType="textPersonName" />
@@ -36,6 +47,7 @@
                 style="@style/input_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@={shoe.company}"
                 android:ems="10"
                 android:hint="Shoe company"
                 android:inputType="textPersonName" />
@@ -51,6 +63,7 @@
                 style="@style/input_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@={`` + shoe.size}"
                 android:ems="10"
                 android:hint="Shoe size"
                 android:inputType="number" />
@@ -66,6 +79,7 @@
                 style="@style/input_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@={shoe.description}"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Shoe description"
@@ -77,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
+                android:onClick="@{() -> viewmodel.addShoe(shoe)}"
                 android:text="Save" />
 
             <Button
@@ -84,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:onClick="@{() -> viewmodel.cancel()}"
                 android:text="Cancel" />
 
         </LinearLayout>

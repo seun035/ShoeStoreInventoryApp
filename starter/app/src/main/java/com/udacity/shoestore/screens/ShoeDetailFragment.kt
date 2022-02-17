@@ -1,18 +1,16 @@
 package com.udacity.shoestore.screens
 
 import android.os.Bundle
-import android.text.TextUtils.isEmpty
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.google.android.material.snackbar.Snackbar
 import com.udacity.shoestore.R
 import com.udacity.shoestore.databinding.FragmentShoeDetailBinding
-import com.udacity.shoestore.databinding.FragmentShoeListBinding
 import com.udacity.shoestore.models.Shoe
 import com.udacity.shoestore.viewmodels.ShoeViewModel
 
@@ -22,9 +20,9 @@ class ShoeDetailFragment : Fragment() {
     lateinit var navController: NavController
     private val shoeViewModel: ShoeViewModel by activityViewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -34,6 +32,7 @@ class ShoeDetailFragment : Fragment() {
         setHasOptionsMenu(true)
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shoe_detail, container, false)
+        binding.lifecycleOwner = this
         return binding.root
     }
 
@@ -41,40 +40,33 @@ class ShoeDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(binding.root)
+        binding.viewmodel = shoeViewModel
+        binding.shoe = Shoe("", 0.0, "", "")
 
-        binding.saveBtn.setOnClickListener {
-            val name = binding.shoeNameEdit.text.toString()
-            val size =  binding.shoeSizeEdit.text.toString()
-            val company = binding.shoeCompanyEdit.text.toString()
-            val description = binding.shoeDescriptionEdit.text.toString()
-
-            if (name.isNullOrEmpty()){
-                Toast.makeText(requireContext(), "Name is required", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+        shoeViewModel.shoeAddedState.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it){
+                    navController.popBackStack()
+                    shoeViewModel.resetAddedState()
+                }
             }
+        })
 
-            if(company.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "Company is required", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+        shoeViewModel.cancelState.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it){
+                    navController.popBackStack()
+                    shoeViewModel.resetCancelState()
+                }
             }
+        })
 
-            if (size.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "Size is required", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+        shoeViewModel.addShoeError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                shoeViewModel.resetAddShoeError()
             }
-
-            if (description.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "Description is required", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            shoeViewModel.addShoe(Shoe(name,  size.toDouble(), company , description ))
-            navController.popBackStack()
-        }
-
-        binding.cancelBtn.setOnClickListener {
-            navController.popBackStack()
-        }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

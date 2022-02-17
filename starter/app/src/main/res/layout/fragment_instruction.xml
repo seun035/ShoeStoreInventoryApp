@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--I used Constraint layout here  because I wanted to practise with it -->
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Click save to save a shoe and cancel toclear a shoe addition"
+        android:text="Click save to save a shoe and cancel to clear a shoe addition"
         app:layout_constraintEnd_toEndOf="@+id/textView3"
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
